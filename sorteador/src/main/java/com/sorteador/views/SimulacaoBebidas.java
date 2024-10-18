@@ -16,22 +16,43 @@ public class SimulacaoBebidas extends JPanel {
 	public SimulacaoBebidas(MainWindow mainWindow) {
         this.mainWindow = mainWindow; // Armazena a referência 
         
-        setLayout(new BorderLayout());
+        // Painel "mãe" que vai conter todos os componentes
+        setLayout(new BorderLayout()); // Usaremos BorderLayout para estruturar os componentes principais
+        JPanel simulacaoPanel = new JPanel(new BorderLayout());
+        simulacaoPanel.setBorder(BorderFactory.createTitledBorder("Simulação de Bebidas - Salgados"));
 
-        // Painel principal
-        JPanel painelMae = new JPanel();
-        painelMae.setLayout(new GridLayout(0, 1)); // Adiciona layout vertical
+        // Painel central que vai conter os 2 painéis (leftPanel, rightPanel)
+        JPanel centralPanel = new JPanel(new GridLayout(1, 2)); // Divide em 2 colunas
+        simulacaoPanel.add(centralPanel, BorderLayout.CENTER);
 
-        // Adicionar componentes de bebidas
-        painelMae.add(new JLabel("Escolha as bebidas:"));
+        // Painel da Esquerda (Bebidas Não Alcoólicas)
+        JPanel nonAlcoholicPanel = new JPanel();
+        nonAlcoholicPanel.setLayout(new BoxLayout(nonAlcoholicPanel, BoxLayout.Y_AXIS));
+        nonAlcoholicPanel.setBorder(BorderFactory.createTitledBorder("Bebidas Não Alcoólicas"));
+        
+        // Adiciona os itens de bebidas não alcoólicas
+        nonAlcoholicPanel.add(new JCheckBox("Cerveja Sem Álcool"));
+        nonAlcoholicPanel.add(new JCheckBox("Água"));
+        nonAlcoholicPanel.add(new JCheckBox("Suco"));
+        nonAlcoholicPanel.add(new JCheckBox("Refrigerante"));
 
-        JCheckBox refrigerante = new JCheckBox("Refrigerante");
-        JCheckBox cerveja = new JCheckBox("Cerveja");
-        JCheckBox agua = new JCheckBox("Água");
+        // Painel da Direita (Bebidas Alcoólicas)
+        JPanel alcoholicPanel = new JPanel();
+        alcoholicPanel.setLayout(new BoxLayout(alcoholicPanel, BoxLayout.Y_AXIS));
+        alcoholicPanel.setBorder(BorderFactory.createTitledBorder("Bebidas Alcoólicas"));
+        
+        // Adiciona os itens de bebidas alcoólicas
+        alcoholicPanel.add(new JCheckBox("Cerveja"));
+        alcoholicPanel.add(new JCheckBox("Vinho"));
+        alcoholicPanel.add(new JCheckBox("Vodka"));
+        alcoholicPanel.add(new JCheckBox("Drink"));
 
-        painelMae.add(refrigerante);
-        painelMae.add(cerveja);
-        painelMae.add(agua);
+        // Adiciona os subpainéis ao painel central
+        centralPanel.add(nonAlcoholicPanel);
+        centralPanel.add(alcoholicPanel);
+
+        // Adiciona o painel "simulação" ao painel principal
+        add(simulacaoPanel, BorderLayout.CENTER);
 
         // Adicionar botões Voltar, Cancelar, Simular no final
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -45,7 +66,7 @@ public class SimulacaoBebidas extends JPanel {
         painelBotoes.add(simularButton);
 
         // Adiciona os paineis ao painel principal
-        add(painelMae, BorderLayout.CENTER);
+        add(simulacaoPanel, BorderLayout.CENTER);
         add(painelBotoes, BorderLayout.SOUTH);
 
         // Lógica para os botões
@@ -68,15 +89,18 @@ public class SimulacaoBebidas extends JPanel {
 
 
 
-        // Botão Simular: lógica para salvar os dados no banco
-        simularButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Aqui você pode adicionar a lógica para salvar os dados no banco
-                // por exemplo: salvar a escolha das bebidas
-                System.out.println("Simulação finalizada. Dados enviados para o banco.");
-            }
-        });
+	     // Botão Simular: lógica para exibir o painel de Simulação de Salgado
+	        simularButton.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+	                // Aqui você pode adicionar a lógica para salvar os dados no banco
+	                System.out.println("Simulação finalizada. Dados enviados para o banco.");
+
+	                // Trocar para o painel de resultado da simulação de Salgado
+	                mainWindow.showPanel(new ResultadoSimulacaoSalgado(mainWindow).getPanel());
+	            }
+	        });
+
     }
 	public JPanel getPanel() {
         return this; // Retorna o painel para exibição
