@@ -1,0 +1,17 @@
+
+
+# Ignorar arquivos de configuração do Eclipse
+.project
+.settings/
+
+# Ignorar banco de dados local
+*.db
+
+# Ignorar arquivos de build
+pom.xml
+
+# Ignorar pasta target
+/target/
+
+# Ignorar arquivos do Eclipse
+.classpath
