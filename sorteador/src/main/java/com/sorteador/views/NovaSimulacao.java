@@ -48,7 +48,7 @@ public class NovaSimulacao extends JPanel {
         // Obtém a instância da janela principal e troca para a nova view
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         if (topFrame instanceof MainWindow) {
-             ((MainWindow) topFrame).showPanel(new NovaSimulacaoSalgados().getPanel());
+             ((MainWindow) topFrame).showPanel(new NovaSimulacaoSalgados((MainWindow) topFrame)); // Passa a referência do MainWindow.getPanel());
           }
         });
 
@@ -83,7 +83,7 @@ public class NovaSimulacao extends JPanel {
         // Obtém a instância da janela principal e troca para a nova view
         JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         if (topFrame instanceof MainWindow) {
-             ((MainWindow) topFrame).showPanel(new NovaSimulacaoChurrasco().getPanel());
+             ((MainWindow) topFrame).showPanel(new NovaSimulacaoChurrasco((MainWindow) topFrame));
           }
         });
 

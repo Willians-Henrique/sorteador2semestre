@@ -1,13 +1,29 @@
 package com.sorteador.views;
 
 import javax.swing.*;
+
+import com.sorteador.config.MainWindowConfig;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class NovaSimulacaoChurrasco extends JPanel {
+	
     private static final long serialVersionUID = 1L;
+    private MainWindow mainWindow; // Referência à MainWindow
 
-    public NovaSimulacaoChurrasco() {
-        setLayout(new GridLayout(1, 3)); // Divide a tela em 3 colunas iguais
+    public NovaSimulacaoChurrasco(MainWindow mainWindow) {
+        this.mainWindow = mainWindow; // Armazena a referência
+        
+    	 // Painel "mãe" que vai conter todos os componentes
+        setLayout(new BorderLayout()); // Usaremos BorderLayout para estruturar os componentes principais
+        JPanel simulacaoPanel = new JPanel(new BorderLayout());
+        simulacaoPanel.setBorder(BorderFactory.createTitledBorder("Simulação de Churrasco"));
+
+        // Painel central que vai conter os 3 painéis (leftPanel, middlePanel, rightPanel)
+        JPanel centralPanel = new JPanel(new GridLayout(1, 3)); // Divide em 3 colunas
+        simulacaoPanel.add(centralPanel, BorderLayout.CENTER);
 
         // Painel da Esquerda (com 2 seções: dados de pessoas e agregados)
         JPanel leftPanel = new JPanel(new GridLayout(2, 1)); // Divide em 2 partes iguais
@@ -82,6 +98,9 @@ public class NovaSimulacaoChurrasco extends JPanel {
         // Adiciona as duas seções ao painel esquerdo
         leftPanel.add(pessoasPanel);  // Parte superior
         leftPanel.add(agregadosPanel); // Parte inferior
+        
+        // Adiciona o leftPanel ao centralPanel
+        centralPanel.add(leftPanel);
 
         // Painel do Meio (opções do banco de dados)
         JPanel middlePanel = new JPanel(new GridLayout(3, 1)); // Divide em 3 partes iguais
@@ -127,6 +146,9 @@ public class NovaSimulacaoChurrasco extends JPanel {
         middlePanel.add(bovinosPanel);
         middlePanel.add(suinosPanel);
         middlePanel.add(frangoPanel);
+        
+        // Adiciona o middlePanel ao centralPanel
+        centralPanel.add(middlePanel);
 
         // Painel da Direita (opções do banco de dados)
         JPanel rightPanel = new JPanel(new GridLayout(2, 1)); // Divide em 2 partes
@@ -162,11 +184,49 @@ public class NovaSimulacaoChurrasco extends JPanel {
 
         rightPanel.add(bovinosSemOssoPanel);
         rightPanel.add(suinosSemOssoPanel);
+        
+        // Adiciona o rightPanel ao centralPanel
+        centralPanel.add(rightPanel);
 
-        // Adiciona os 3 painéis à tela
-        add(leftPanel);
-        add(middlePanel);
-        add(rightPanel);
+        // Painel para os botões "Simular" e "Cancelar"
+        JPanel botoesPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT)); // Posiciona os botões no canto direito
+        JButton voltarButton = new JButton("Voltar");
+        JButton cancelarButton = new JButton("Cancelar");
+        JButton avancarButton = new JButton("Avançar");
+        
+        // Botão Avancar: vai para tela de bebidas
+        avancarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainWindow.showPanel(new SimulacaoBebidasChurrasco(mainWindow));
+            }
+        });
+	     // Botão Cancelar: retorna para a tela inicial
+        cancelarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Botão Cancelar clicado!"); // Para verificar se o botão está funcionando
+                mainWindow.showPanel(new MainWindowConfig().getMainPanel()); // Chama o método para mostrar o painel inicial
+            }
+        });
+        
+        // Botão voltar: retorna para a tela de simulação
+        voltarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainWindow.showPanel(new NovaSimulacao());
+            }
+        });
+        
+        botoesPanel.add(voltarButton);
+        botoesPanel.add(cancelarButton);
+        botoesPanel.add(avancarButton);
+
+        // Adiciona o painel de botões na parte inferior do painel principal
+        simulacaoPanel.add(botoesPanel, BorderLayout.SOUTH);
+
+        // Adiciona o painel "simulação" ao painel principal
+        add(simulacaoPanel, BorderLayout.CENTER);
     }
 
     public JPanel getPanel() {
